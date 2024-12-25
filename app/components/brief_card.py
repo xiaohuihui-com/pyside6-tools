@@ -49,7 +49,6 @@ class BriefCard(QFrame):
         self.contentLabel.setObjectName('contentLabel')
         StyleSheet.BRIEF_CARD.apply(self)
 
-
 if __name__ == '__main__':
     import sys
     from PySide6.QtWidgets import QApplication
