@@ -54,7 +54,6 @@ if __name__ == '__main__':
     from PySide6.QtWidgets import QApplication
     from qfluentwidgets import setTheme, Theme
     from app.recource import resource_rc
-
     setTheme(Theme.LIGHT)
     app = QApplication(sys.argv)
     w = BriefCard(
