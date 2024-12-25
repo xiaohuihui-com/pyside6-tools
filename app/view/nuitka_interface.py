@@ -157,7 +157,6 @@ class NuitkaInterface(QWidget):
         self.data = [self.brife_card.pyenv, self.settings_card.output, self.settings_card.main_function,
                      self.settings_card.cmdable]
 
-
         args = [
             f'{self.brife_card.pyenv} -m nuitka',
             '--standalone',
