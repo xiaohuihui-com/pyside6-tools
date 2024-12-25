@@ -1,35 +1,42 @@
 from PySide6.QtCore import Qt, Signal, QUrl
 from PySide6.QtGui import QPixmap, QDesktopServices
-from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout, QWidget, QHBoxLayout
-from qfluentwidgets import IconWidget,GroupHeaderCardWidget,PushButton,ComboBox,SearchLineEdit,PrimaryPushButton,BodyLabel,InfoBarIcon,FluentIcon
+from PySide6.QtWidgets import QFrame, QLabel, QVBoxLayout, QWidget, QHBoxLayout, QFileDialog
+from qfluentwidgets import IconWidget, GroupHeaderCardWidget, PushButton, ComboBox, SearchLineEdit, PrimaryPushButton, \
+    BodyLabel, InfoBarIcon,InfoBar,InfoBarPosition
+from qfluentwidgets import FluentIcon as FIF
 from app.common.style_sheet import StyleSheet
+
+
 class SettinsCard(GroupHeaderCardWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setTitle("基本设置")
         self.setBorderRadius(8)
-
-        self.chooseButton = PushButton("选择")
+        self.out_chooseButton = PushButton("选择")
         self.comboBox = ComboBox()
-        self.lineEdit = SearchLineEdit()
+        self.comboBox.addItems(["始终显示（首次打包时建议启用）", "始终隐藏"])
+        self.main_chooseButton = PushButton("选择")
 
         self.hintIcon = IconWidget(InfoBarIcon.INFORMATION)
         self.hintLabel = BodyLabel("点击编译按钮以开始打包 👉")
-        self.compileButton = PrimaryPushButton(FluentIcon.PLAY_SOLID, "编译")
-        self.openButton = PushButton(FluentIcon.VIEW, "打开")
-        self.bottomLayout = QHBoxLayout()
+        self.compileButton = PrimaryPushButton(FIF.PLAY_SOLID, "编译")
+        self.openButton = PushButton(FIF.VIEW, "打开")
 
-        self.chooseButton.setFixedWidth(120)
-        self.lineEdit.setFixedWidth(320)
+        self.__initWidget()
+        self.connectSignalToSlot()
+
+    def __initWidget(self):
+        self.out_chooseButton.setFixedWidth(120)
+        self.main_chooseButton.setFixedWidth(120)
         self.comboBox.setFixedWidth(320)
-        self.comboBox.addItems(["始终显示（首次打包时建议启用）", "始终隐藏"])
-        self.lineEdit.setPlaceholderText("输入入口脚本的路径")
+        self.hintIcon.setFixedSize(16, 16)
 
         # 设置底部工具栏布局
-        self.hintIcon.setFixedSize(16, 16)
+        self.bottomLayout = QHBoxLayout()
+
         self.bottomLayout.setSpacing(10)
-        self.bottomLayout.setContentsMargins(24, 15, 24, 20)
+        self.bottomLayout.setContentsMargins(24, 0, 24, 20)
         self.bottomLayout.addWidget(self.hintIcon, 0, Qt.AlignLeft)
         self.bottomLayout.addWidget(self.hintLabel, 0, Qt.AlignLeft)
         self.bottomLayout.addStretch(1)
@@ -38,14 +45,49 @@ class SettinsCard(GroupHeaderCardWidget):
         self.bottomLayout.setAlignment(Qt.AlignVCenter)
 
         # 添加组件到分组中
-        self.addGroup("resource/Rocket.svg", "构建目录", "选择 Nuitka 的输出目录", self.chooseButton)
-        self.addGroup("resource/Joystick.svg", "运行终端", "设置是否显示命令行终端", self.comboBox)
-        group = self.addGroup("resource/Python.svg", "入口脚本", "选择软件的入口脚本", self.lineEdit)
+        self.addGroup(FIF.ASTERISK, "构建目录", "选择 Nuitka 的输出目录", self.out_chooseButton)
+        self.addGroup(FIF.ASTERISK, "运行终端", "设置是否显示命令行终端", self.comboBox)
+        group = self.addGroup(FIF.ASTERISK, "入口脚本", "选择软件的入口脚本", self.main_chooseButton)
         group.setSeparatorVisible(True)
+
 
         # 添加底部工具栏
         self.vBoxLayout.addLayout(self.bottomLayout)
 
+    def connectSignalToSlot(self):
+        self.out_chooseButton.clicked.connect(self.outputDirChoose)
+        self.main_chooseButton.clicked.connect(self.mainFunctionChoose)
+        self.comboBox.currentIndexChanged.connect(self.onComboBoxChanged)
+    def outputDirChoose(self):
+        fileDir = QFileDialog.getExistingDirectory(self, "请选择Nuitka输出目录", "")
+        print(fileDir)
+        self.groupWidgets[0].setContent(fileDir)
+        InfoBar.success(
+            title='输出文件目录',
+            content=f"{fileDir}",
+            orient=Qt.Vertical,
+            isClosable=True,
+            position=InfoBarPosition.TOP_RIGHT,
+            duration=2000,
+            parent=self
+        )
+    def mainFunctionChoose(self):
+        fileName, _ = QFileDialog.getOpenFileName(self, "请选择Python程序入口py文件", "",
+                                                       "Python Files (*.py);;All Files (*)")
+        print(fileName)
+        self.groupWidgets[2].setContent(fileName)
+        InfoBar.success(
+            title='入口文件路径',
+            content=f"{fileName}",
+            orient=Qt.Vertical,
+            isClosable=True,
+            position=InfoBarPosition.TOP_RIGHT,
+            duration=2000,
+            parent=self
+        )
+
+    def onComboBoxChanged(self, index):
+        print(index)
 
 
 if __name__ == '__main__':

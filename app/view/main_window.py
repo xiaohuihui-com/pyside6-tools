@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QApplication, QFrame, QHBoxLayout,QLabel,QVBoxLayo
 from qfluentwidgets import (NavigationItemPosition, MessageBox, setTheme, Theme, MSFluentWindow,
                             NavigationAvatarWidget,FluentStyleSheet, FluentTitleBar,qrouter, SubtitleLabel, setFont)
 from qfluentwidgets import FluentIcon as FIF
-
+from app.view.nuitka_interface import NuitkaInterface
 class Widget(QFrame):
 
     def __init__(self, text: str, parent=None):
@@ -27,7 +27,7 @@ class MainWindow(MSFluentWindow):
         self.hBoxLayout.setContentsMargins(0, 36, 0, 0)
         self.navigationInterface.setFixedWidth(60)
         # create sub interface
-        self.homeInterface = Widget('Home Interface', self)
+        self.nuitkaInterface = NuitkaInterface(self)
         self.appInterface = Widget('Application Interface', self)
         self.videoInterface = Widget('Video Interface', self)
         self.libraryInterface = Widget('library Interface', self)
@@ -36,13 +36,13 @@ class MainWindow(MSFluentWindow):
         self.initWindow()
 
     def initNavigation(self):
-        self.addSubInterface(self.homeInterface, FIF.HOME, '主页', FIF.HOME_FILL)
+        self.addSubInterface(self.nuitkaInterface, FIF.HOME, '主页', FIF.HOME_FILL)
         self.addSubInterface(self.appInterface, FIF.APPLICATION, '应用')
         self.addSubInterface(self.videoInterface, FIF.VIDEO, '视频')
 
         self.addSubInterface(self.libraryInterface, FIF.BOOK_SHELF, '库', FIF.LIBRARY_FILL, NavigationItemPosition.BOTTOM)
 
-        self.navigationInterface.setCurrentItem(self.homeInterface.objectName())
+        self.navigationInterface.setCurrentItem(self.nuitkaInterface.objectName())
 
     def initWindow(self):
         self.resize(900, 700)

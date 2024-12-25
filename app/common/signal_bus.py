@@ -7,7 +7,7 @@ class SignalBus(QObject):
 
     switchToSampleCard = Signal(str, int)
     micaEnableChanged = Signal(bool)
-    loginSignal = Signal()
+    compileSignal= Signal()
     topicSignal = Signal(str)
 
 
