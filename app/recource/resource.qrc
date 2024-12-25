@@ -1,0 +1,11 @@
+<RCC>
+    <qresource>
+        <file>images/nuitka.png</file>
+
+        <file>qss/dark.qss</file>
+        <file>qss/light.qss</file>
+
+        <file>qss/dark/brief_card.qss</file>
+        <file>qss/light/brief_card.qss</file>
+    </qresource>
+</RCC>

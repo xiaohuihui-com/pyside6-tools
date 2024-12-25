@@ -1,0 +1,12 @@
+BriefCard {
+    background-color: rgba(0, 0, 0, 0.18);
+}
+
+#titleLabel{
+    font: bold 24px "Microsoft YaHei UI";
+    color: white;
+}
+#contentLabel{
+    font: 14px "Microsoft YaHei UI";
+    color: white;
+}

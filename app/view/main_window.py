@@ -7,7 +7,6 @@ from PySide6.QtWidgets import QApplication, QFrame, QHBoxLayout,QLabel,QVBoxLayo
 from qfluentwidgets import (NavigationItemPosition, MessageBox, setTheme, Theme, MSFluentWindow,
                             NavigationAvatarWidget,FluentStyleSheet, FluentTitleBar,qrouter, SubtitleLabel, setFont)
 from qfluentwidgets import FluentIcon as FIF
-from qframelesswindow import StandardTitleBar,TitleBar,TitleBarBase
 
 class Widget(QFrame):
 
@@ -21,11 +20,12 @@ class Widget(QFrame):
         self.hBoxLayout.addWidget(self.label, 1, Qt.AlignCenter)
         self.setObjectName(text.replace(' ', '-'))
 
-
 class MainWindow(MSFluentWindow):
 
     def __init__(self):
         super().__init__()
+        self.hBoxLayout.setContentsMargins(0, 36, 0, 0)
+        self.navigationInterface.setFixedWidth(60)
         # create sub interface
         self.homeInterface = Widget('Home Interface', self)
         self.appInterface = Widget('Application Interface', self)
