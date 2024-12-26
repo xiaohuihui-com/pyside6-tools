@@ -3,7 +3,6 @@ import os
 import sys
 
 from PySide6.QtWidgets import QApplication
-
 from app.view.main_window import MainWindow
 from app.recource import resource_rc
 
