@@ -22,16 +22,16 @@ class BriefCard(BriefCardBase):
         fileName, _ = QFileDialog.getOpenFileName(self, "请选择Python程序入口py文件", "D:\minianaconda\envs",
                                                   "Python Files (*.exe);;All Files (*)")
         self.pyenv = fileName
-        print(fileName)
-        InfoBar.success(
-            title='Python解释器',
-            content="虚拟环境Python解释器，加载成功！",
-            orient=Qt.Horizontal,
-            isClosable=True,
-            position=InfoBarPosition.TOP_RIGHT,
-            duration=2000,
-            parent=self
-        )
+        if self.pyenv:
+            InfoBar.success(
+                title='Python解释器',
+                content="虚拟环境Python解释器，加载成功！",
+                orient=Qt.Horizontal,
+                isClosable=True,
+                position=InfoBarPosition.TOP_RIGHT,
+                duration=2000,
+                parent=self
+            )
 
 
 class SettinsCard(GroupHeaderCardWidget):
@@ -92,17 +92,8 @@ class SettinsCard(GroupHeaderCardWidget):
     def outputDirChoose(self):
         fileDir = QFileDialog.getExistingDirectory(self, "请选择Nuitka输出目录", "./")
         self.output = fileDir
-        print(fileDir)
         self.groupWidgets[0].setContent(fileDir)
-        InfoBar.success(
-            title='输出文件目录',
-            content=f"{fileDir}",
-            orient=Qt.Vertical,
-            isClosable=True,
-            position=InfoBarPosition.TOP_RIGHT,
-            duration=2000,
-            parent=self
-        )
+
 
     def mainFunctionChoose(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "请选择Python程序入口py文件", "./",
@@ -110,15 +101,7 @@ class SettinsCard(GroupHeaderCardWidget):
         self.main_function = fileName
         print(fileName)
         self.groupWidgets[2].setContent(fileName)
-        InfoBar.success(
-            title='入口文件路径',
-            content=f"{fileName}",
-            orient=Qt.Vertical,
-            isClosable=True,
-            position=InfoBarPosition.TOP_RIGHT,
-            duration=2000,
-            parent=self
-        )
+
 
     def onComboBoxChanged(self, index):
         if index == 0:
@@ -179,9 +162,8 @@ class NuitkaInterface(QWidget):
             print(line.strip())
 
         # 检查脚本的返回码
-        if process.returncode != 0:
+        if process.returncode:
             print(f"脚本执行失败，返回码：{process.returncode}")
-            # 可以选择打印stderr以获取更多错误信息
             print(process.stderr)
 
 

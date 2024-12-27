@@ -17,7 +17,7 @@ class BriefCardBase(QFrame):
 
     def __init__(self, icon, title, content, parent=None):
         super().__init__(parent=parent)
-        self.setFixedHeight(100)
+        self.setFixedHeight(150)
         self.iconWidget = IconWidget(icon, self)
         self.titleLabel = QLabel(title, self)
         self.contentLabel = QLabel(TextWrap.wrap(content, 64, False)[0], self)
@@ -25,7 +25,7 @@ class BriefCardBase(QFrame):
         self.__initWidget()
 
     def __initWidget(self):
-        self.iconWidget.setFixedSize(64, 64)
+        self.iconWidget.setFixedSize(120, 120)
 
         self.hBoxLayout = QHBoxLayout(self)
         self.vBoxLayout = QVBoxLayout()
